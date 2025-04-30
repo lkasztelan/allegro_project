@@ -15,8 +15,8 @@ PROD = {
 
 # Dane dostępowe do środowiska sandbox
 SANDBOX = {
-    'client_id': 'cc1b485145fc42fc9f48a8ce1727f2b6',  # ID aplikacji sandboxowej
-    'client_secret': 'sekret_sandboxa',  # klucz tajny do aplikacji sandboxowej
+    'client_id': '0d726f5e89c8409299aa66ac2eb68934',  # ID aplikacji sandboxowej
+    'client_secret': 'ByjA8qsXGHwZ2c1G9fvhIn9TTPWWbFIZqpRJp4nYQU0HbkxUoySwnOHCZdYY0Lg4',  # klucz tajny do aplikacji sandboxowej
     'auth_url': 'https://allegro.pl.allegrosandbox.pl/auth/oauth/authorize',  # logowanie sandbox
     'token_url': 'https://allegro.pl.allegrosandbox.pl/auth/oauth/token',     # token sandbox
     'api_url': 'https://api.allegro.pl.allegrosandbox.pl',                    # API sandbox

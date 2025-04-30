@@ -39,11 +39,18 @@ async def allegro_callback(request: Request):
 
     print("✅ Access Token:", access_token)
 
+    # Zapisz token i inne dane do pliku JSON
+    with open("token.json", "w") as f:
+        import json
+        json.dump(token_data, f, indent=4)
+
+    print("💾 Token zapisany do pliku token.json")
+
     return {"message": "Pobrano access token!", "access_token": access_token}
 
-# Funkcja uruchamiająca flow logowania
+# Główna funkcja uruchamiająca flow logowania
 def start_auth_flow():
-    # przygotowujemy URL logowania Allegro z przekierowaniem
+    # przygotowujemy URL logowania Allegro
     login_url = (
         f"{settings.auth_url}"
         f"?response_type=code"
@@ -52,7 +59,12 @@ def start_auth_flow():
     )
 
     print("🔗 Otwieram przeglądarkę z Allegro login...")
-    webbrowser.open(login_url)  # automatycznie otwiera link
+    webbrowser.open(login_url)
 
     print("🚀 Uruchamiam lokalny serwer na http://localhost:8000")
-    uvicorn.run(app, host="0.0.0.0", port=8000)  # uruchamia serwer FastAPI
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# ⬇️ DODAJ TO NA KOŃCU
+if __name__ == "__main__":
+    start_auth_flow()
+
