@@ -9,7 +9,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Lista dostępnych Assistantów (Nazwa: ID Assistanta)
 ASSISTANTS = {
-    "Twój Assistant 1": "asst_abc123...",
-    "Twój Assistant 2": "asst_def456...",
+    "Allegro Kategorie 4.1": "asst_IZ9FLIREx7KRjNufDueY579t",
+    "Allegro Kategorie 3o": "asst_MktZkfqzBdWwLDBTNJgGHyA3",
     # Dodaj tutaj kolejne jeśli chcesz
 }
