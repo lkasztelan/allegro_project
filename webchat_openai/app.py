@@ -5,6 +5,9 @@ import time
 import openai
 from flask import Flask, render_template, request, jsonify
 from config.openai_settings import OPENAI_API_KEY, ASSISTANTS
+from dotenv import load_dotenv
+load_dotenv()
+
 
 openai.api_key = OPENAI_API_KEY
 
