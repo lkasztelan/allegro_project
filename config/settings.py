@@ -1,26 +1,34 @@
 # config/settings.py
 
+
+
+import os
+from dotenv import load_dotenv
+
+# Ładujemy zmienne z .env
+load_dotenv()
+
 # Flaga, czy korzystamy ze środowiska testowego (True = Sandbox, False = Produkcja)
 USE_SANDBOX = True
 
 # Dane dostępowe do środowiska produkcyjnego
 PROD = {
-    'client_id': 'cc1b485145fc42fc9f48a8ce1727f2b6',  # ID aplikacji produkcyjnej z Allegro
-    'client_secret': 'sekret_produkcji',  # klucz tajny do aplikacji produkcyjnej
-    'auth_url': 'https://allegro.pl/auth/oauth/authorize',  # URL logowania (produkcyjny)
-    'token_url': 'https://allegro.pl/auth/oauth/token',     # URL tokena (produkcyjny)
-    'api_url': 'https://api.allegro.pl',                    # URL API (produkcyjny)
-    'redirect_uri': 'http://localhost:8000/allegro/callback'  # adres, pod który Allegro odeśle kod
+    'client_id': os.getenv('PROD_CLIENT_ID'),
+    'client_secret': os.getenv('PROD_CLIENT_SECRET'),
+    'auth_url': 'https://allegro.pl/auth/oauth/authorize',
+    'token_url': 'https://allegro.pl/auth/oauth/token',
+    'api_url': 'https://api.allegro.pl',
+    'redirect_uri': 'http://localhost:8000/allegro/callback'
 }
 
 # Dane dostępowe do środowiska sandbox
 SANDBOX = {
-    'client_id': '0d726f5e89c8409299aa66ac2eb68934',  # ID aplikacji sandboxowej
-    'client_secret': 'ByjA8qsXGHwZ2c1G9fvhIn9TTPWWbFIZqpRJp4nYQU0HbkxUoySwnOHCZdYY0Lg4',  # klucz tajny do aplikacji sandboxowej
-    'auth_url': 'https://allegro.pl.allegrosandbox.pl/auth/oauth/authorize',  # logowanie sandbox
-    'token_url': 'https://allegro.pl.allegrosandbox.pl/auth/oauth/token',     # token sandbox
-    'api_url': 'https://api.allegro.pl.allegrosandbox.pl',                    # API sandbox
-    'redirect_uri': 'http://localhost:8000/allegro/callback'  # callback lokalny (ten sam)
+    'client_id': os.getenv('SANDBOX_CLIENT_ID'),
+    'client_secret': os.getenv('SANDBOX_CLIENT_SECRET'),
+    'auth_url': 'https://allegro.pl.allegrosandbox.pl/auth/oauth/authorize',
+    'token_url': 'https://allegro.pl.allegrosandbox.pl/auth/oauth/token',
+    'api_url': 'https://api.allegro.pl.allegrosandbox.pl',
+    'redirect_uri': 'http://localhost:8000/allegro/callback'
 }
 
 # Wybierz aktywną konfigurację w zależności od środowiska
