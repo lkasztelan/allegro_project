@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Webchat OpenAI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 20px;
+            display: block;
+            color: #555;
+        }
+        select, textarea, button {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            background-color: #fafafa;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .copy-btn {
+            background-color: #2196F3;
+            margin-top: -10px;
+        }
+        .copy-btn:hover {
+            background-color: #1976D2;
+        }
+        .loading {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Webchat OpenAI</h1>
+
+        <form id="chatForm">
+            <label for="assistant">Wybierz Assistanta:</label>
+            <select id="assistant" name="assistant">
+                {% for name, id in assistants.items() %}
+                    <option value="{{ id }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="prompt">Polecenie (prompt):</label>
+            <textarea id="prompt" name="prompt" rows="3" placeholder="np. Wskaż kategorię na podstawie poniższego tekstu"></textarea>
+
+            <label for="second_text">Drugi tekst:</label>
+            <textarea id="second_text" name="second_text" rows="6" placeholder="Tutaj wklej główny tekst"></textarea>
+
+            <button type="submit">Wyślij do Assistanta</button>
+
+            <div id="loading" class="loading" style="display: none;">⌛ Ładowanie odpowiedzi...</div>
+
+            <label for="response">Odpowiedź:</label>
+            <textarea id="response" name="response" rows="10" readonly placeholder="Tutaj pojawi się odpowiedź..."></textarea>
+
+            <button type="button" class="copy-btn" onclick="copyResponse()">Skopiuj odpowiedź</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('chatForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const assistant_id = document.getElementById('assistant').value;
+            const prompt = document.getElementById('prompt').value;
+            const second_text = document.getElementById('second_text').value;
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('response').value = '';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ assistant_id, prompt, second_text })
+                });
+
+                const data = await response.json();
+
+                document.getElementById('loading').style.display = 'none';
+
+                if (data.response) {
+                    document.getElementById('response').value = data.response;
+                    scrollToResponse();
+                } else {
+                    document.getElementById('response').value = '❌ Błąd: ' + (data.error || 'Nieznany błąd');
+                    scrollToResponse();
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('response').value = '❌ Błąd połączenia z serwerem.';
+                scrollToResponse();
+            }
+        });
+
+        function copyResponse() {
+            const responseField = document.getElementById('response');
+            responseField.select();
+            document.execCommand('copy');
+            alert('✅ Odpowiedź została skopiowana!');
+        }
+
+        function scrollToResponse() {
+            const responseField = document.getElementById('response');
+            responseField.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
